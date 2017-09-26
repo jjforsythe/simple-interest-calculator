@@ -10,9 +10,10 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "client-test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "start": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "concurrently \"npm run server\" \"npm run client-test\"",
     "server": "node start-server.js",
     "client": "react-scripts start"
   },

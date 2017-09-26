@@ -8,7 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: '',
+      amount: '1000',
       interestRate: '1.5',
       currency: 'USD',
       conversionRate: '1.0'

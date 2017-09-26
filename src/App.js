@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './logo_outline.png';
 import './App.css';
 import Client from "./Client";
 
@@ -8,15 +8,15 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: '1000',
-      interestRate: '10',
+      amount: '',
+      interestRate: '1.5',
       currency: 'USD',
-      conversionRate: '5.0'
+      conversionRate: '1.0'
     };
 
-    Client.search("", foods => {
+    Client.search("", rates => {
           this.setState({
-            conversionRate: foods.GBP_USD
+            conversionRate: rates.GBP_USD
           });
       });
   
@@ -41,6 +41,32 @@ class App extends Component {
     this.setState({
       currency: currency
     });
+    Client.search("", rates => {
+          
+        switch(currency) {
+            case "AUD":
+                this.setState({conversionRate: rates.GBP_AUD});
+                break;
+            case "BTC":
+                this.setState({conversionRate: rates.GBP_BTC});
+                break;
+            case "CAD":
+                this.setState({conversionRate: rates.GBP_CAD});
+                break;
+            case "CNY":
+                this.setState({conversionRate: rates.GBP_CNY});
+                break;
+            case "EUR":
+                this.setState({conversionRate: rates.GBP_EUR});
+                break;
+            case "USD":
+                this.setState({conversionRate: rates.GBP_USD});
+                break;
+            default:
+                this.setState({conversionRate: '1.0'});
+        }
+          
+      });
   }
 
   render() {
@@ -48,7 +74,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Interest Rate Calculator</h2>
+          <h2>Simple Interest Calculator</h2>
         </div>
         <table className="myTable">
         <tbody>
@@ -63,21 +89,27 @@ class App extends Component {
               onInterestInput = {this.handleInterestInput}
             /></td>
           </tr>
+        </tbody>
+      </table>
+      <table className="myTable">
+        <tbody>
           <tr>
-            <td><CurrencySelector 
+            <td style={{width:290 + "px"}}><CurrencySelector 
               currency = {this.state.currency}
               onCurrencyChange = {this.handleCurrencyChange}
             /></td>
-            <td style={{width:20 + "px"}}></td>
-            <td></td>
           </tr>
+        </tbody>
+      </table>
+       <table className="myTable">
+        <tbody>
           <tr style={{height:2 + "px"}}>
             <td>
             <div className="shorty">
             <h3>Interest</h3>
             </div>
             </td>
-            <td></td>
+            <td style={{width:20 + "px"}}></td>
             <td></td>
           </tr>
           <tr>
@@ -149,15 +181,9 @@ class InterestRate extends Component {
           placeholder="0" 
           value={this.props.interestRate}
           onChange={this.handleInterestInput} 
-          style={{width:34 + "px"}} 
+          style={{width:88 + "px"}} 
           />
-         .
-         <input 
-         type="number" 
-         placeholder="00" 
-         style={{width:34 + "px"}}
-         />
-         %
+          <span> %</span>
       </div>
       );
   }
@@ -201,7 +227,8 @@ class CurrencySelector extends Component {
   render () {
     return (
       <div>
-          <h3>Currency</h3>
+          <h3>Convert to Currency</h3>
+          {'GBP -> '}
           <select 
           value={this.props.currency}
           onChange={this.handleCurrencyChange}

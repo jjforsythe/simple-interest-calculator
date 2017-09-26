@@ -27,6 +27,10 @@
   max-height:5px;
 }
 
+table, th, td {
+  
+}
+
 td {
   width: 130px;
   text-align: left;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Client from "./Client";
 
 class App extends Component {
 
@@ -9,8 +10,15 @@ class App extends Component {
     this.state = {
       amount: '1000',
       interestRate: '10',
-      currency: 'BTC'
+      currency: 'USD',
+      conversionRate: '5.0'
     };
+
+    Client.search("", foods => {
+          this.setState({
+            conversionRate: foods.GBP_USD
+          });
+      });
   
   this.handleAmountInput = this.handleAmountInput.bind(this);
   this.handleInterestInput = this.handleInterestInput.bind(this);
@@ -77,12 +85,14 @@ class App extends Component {
               amount = {this.state.amount}
               interestRate = {this.state.interestRate}
               currency = {this.state.currency}
+              conversionRate = {this.state.conversionRate}
             /></td>
             <td style={{width:20 + "px"}}></td>
             <td><AnnualInterest 
               amount = {this.state.amount}
               interestRate = {this.state.interestRate}
               currency = {this.state.currency}
+              conversionRate = {this.state.conversionRate}
             /></td>
           </tr>
         </tbody>
@@ -159,7 +169,7 @@ class MonthlyInterest extends Component {
       <div>
           <h4>/Month</h4>
           <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/(100*12)).toFixed(2)} GBP</p>
-          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/(100*12)).toFixed(2)} {this.props.currency}</p>
+          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate*this.props.conversionRate/(100*12)).toFixed(2)} {this.props.currency}</p>
       </div>
       );
   }
@@ -171,7 +181,7 @@ class AnnualInterest extends Component {
       <div>
           <h4>/Year</h4>
           <p value="5" style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/100).toFixed(2)} GBP</p>
-          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/100).toFixed(2)} {this.props.currency}</p>
+          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate*this.props.conversionRate/100).toFixed(2)} {this.props.currency}</p>
       </div>
       );
   }

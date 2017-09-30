@@ -1,23 +1,28 @@
 {
-  "name": "finimize",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "express": "^4.15.5",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-scripts": "1.0.13"
-  },
+  "name": "simple-interest-calculator",
+  "version": "1.0.0",
+  "description": "To run this app:",
+  "main": "index.js",
   "scripts": {
-    "build": "react-scripts build",
-    "client-test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "concurrently \"npm run server\" \"npm run client-test\"",
-    "server": "node start-server.js",
-    "client": "react-scripts start"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "node start-client.js",
+    "server": "node start-server.js"
   },
-  "proxy": "http://localhost:3001/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjforsythe/simple-interest-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjforsythe/simple-interest-calculator/issues"
+  },
+  "homepage": "https://github.com/jjforsythe/simple-interest-calculator#readme",
+  "dependencies": {
+    "express": "^4.16.1"
+  },
   "devDependencies": {
     "concurrently": "^3.5.0"
   }

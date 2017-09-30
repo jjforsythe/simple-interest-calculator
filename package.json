@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/jjforsythe/simple-interest-calculator#readme",
   "dependencies": {
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "immutable": "^3.8.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"

@@ -1,75 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import {connect} from 'react-redux';
+import logo from './logo_outline.png';
 import './App.css';
 import Client from "./Client";
+import * as actionCreators from './action_creators';
 
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      amount: '1000',
-      interestRate: '1.5',
-      currency: 'USD',
-      conversionRate: '1.0'
-    };
-
-    Client.search("", rates => {
-          this.setState({
-            conversionRate: rates.GBP_USD
-          });
-      });
-  
-  this.handleAmountInput = this.handleAmountInput.bind(this);
-  this.handleInterestInput = this.handleInterestInput.bind(this);
-  this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
-  }
-
-  handleAmountInput(amount) {
-    this.setState({
-      amount: amount
-    });
-  }
-
-  handleInterestInput(interestRate) {
-    this.setState({
-      interestRate: interestRate
-    });
-  }
-
-  handleCurrencyChange(currency) {
-    this.setState({
-      currency: currency
-    });
-    Client.search("", rates => {
-          
-        switch(currency) {
-            case "AUD":
-                this.setState({conversionRate: rates.GBP_AUD});
-                break;
-            case "BTC":
-                this.setState({conversionRate: rates.GBP_BTC});
-                break;
-            case "CAD":
-                this.setState({conversionRate: rates.GBP_CAD});
-                break;
-            case "CNY":
-                this.setState({conversionRate: rates.GBP_CNY});
-                break;
-            case "EUR":
-                this.setState({conversionRate: rates.GBP_EUR});
-                break;
-            case "USD":
-                this.setState({conversionRate: rates.GBP_USD});
-                break;
-            default:
-                this.setState({conversionRate: '1.0'});
-        }
-          
-      });
-  }
-
-  render() {
+//App component is the parent of other components
+const App = (props) => {
     return (
       <div className="App">
         <div className="App-header">
@@ -80,13 +17,13 @@ class App extends Component {
         <tbody>
           <tr>
             <td><Amount
-              amount = {this.state.amount}
-              onAmountInput = {this.handleAmountInput}
+              amount = {props.amount}
+              handleAmountChange = {props.handleAmountChange}
              /></td>
             <td style={{width:20 + "px"}}></td>
             <td><InterestRate
-              interestRate = {this.state.interestRate}
-              onInterestInput = {this.handleInterestInput}
+              interestRate = {props.interestRate}
+              handleInterestChange = {props.handleInterestChange}
             /></td>
           </tr>
         </tbody>
@@ -95,8 +32,8 @@ class App extends Component {
         <tbody>
           <tr>
             <td style={{width:290 + "px"}}><CurrencySelector 
-              currency = {this.state.currency}
-              onCurrencyChange = {this.handleCurrencyChange}
+              currency = {props.currency}
+              handleCurrencyChange = {props.handleCurrencyChange}
             /></td>
           </tr>
         </tbody>
@@ -114,124 +51,139 @@ class App extends Component {
           </tr>
           <tr>
             <td><MonthlyInterest 
-              amount = {this.state.amount}
-              interestRate = {this.state.interestRate}
-              currency = {this.state.currency}
-              conversionRate = {this.state.conversionRate}
+              amount = {props.amount}
+              interestRate = {props.interestRate}
+              currency = {props.currency}
+              conversionRate = {props.conversionRate}
             /></td>
             <td style={{width:20 + "px"}}></td>
             <td><AnnualInterest 
-              amount = {this.state.amount}
-              interestRate = {this.state.interestRate}
-              currency = {this.state.currency}
-              conversionRate = {this.state.conversionRate}
+              amount = {props.amount}
+              interestRate = {props.interestRate}
+              currency = {props.currency}
+              conversionRate = {props.conversionRate}
             /></td>
           </tr>
         </tbody>
       </table>
       </div>
     );
-  }
 }
 
-class Amount extends Component {
-
-  constructor(props) {
-    super(props);
-    this.handleAmountInput = this.handleAmountInput.bind(this);
-  }
-
-  handleAmountInput(e) {
-    this.props.onAmountInput(e.target.value);
-  }
-
-  render () {
-    return (
+//Functional component showing the amount input field
+const Amount = (props) => {
+    return(
       <div>
           <h3>Amount</h3>
           <input 
           type="number" 
           placeholder="0000.00" 
-          value={this.props.amount} 
-          onChange={this.handleAmountInput} 
+          value={props.amount}
+          onChange={(e) => props.handleAmountChange(e.target.value)}
           style={{width:88 + "px"}} />
           <span> GBP</span>
       </div>
       );
-  }
 }
 
-class InterestRate extends Component {
-
-  constructor(props) {
-    super(props);
-    this.handleInterestInput = this.handleInterestInput.bind(this);
-  }
-
-  handleInterestInput(e) {
-    this.props.onInterestInput(e.target.value);
-  }
-
-  render () {
+//Functional component showing the interest rate input field
+const InterestRate = (props) => {
     return (
       <div>
           <h3>Interest Rate</h3>
           <input
           type="number" 
           placeholder="0" 
-          value={this.props.interestRate}
-          onChange={this.handleInterestInput} 
+          value={props.interestRate}
+          onChange={(e) => props.handleInterestChange(e.target.value)} 
           style={{width:88 + "px"}} 
           />
           <span> %</span>
       </div>
       );
-  }
 }
 
-class MonthlyInterest extends Component {
-  render () {
+//Functional component displaying the monthly interest
+const MonthlyInterest = (props) => {
+
+    //calculate monthly interest
+    const getMonthlyInterest = () => {
+      return (props.amount*props.interestRate/(100*12)).toFixed(2);
+    }
+
+    const getConvertedMonthlyInterest = () => {
+      return (props.amount*props.interestRate*props.conversionRate/(100*12)).toFixed(2);
+    }
+
     return (
       <div>
           <h4>/Month</h4>
-          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/(100*12)).toFixed(2)} GBP</p>
-          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate*this.props.conversionRate/(100*12)).toFixed(2)} {this.props.currency}</p>
+          <p style={{width:100 + "px"}}>{getMonthlyInterest()} GBP</p>
+          <p style={{width:100 + "px"}}>{getConvertedMonthlyInterest()} {props.currency}</p>
       </div>
       );
-  }
 }
 
-class AnnualInterest extends Component {
-  render () {
+//Functional component displaying the annual interest
+const AnnualInterest = (props) => {
+
+    //calculate monthly interest
+    const getAnnualInterest = () => {
+      return (props.amount*props.interestRate/(100)).toFixed(2);
+    }
+
+    const getConvertedAnnualInterest = () => {
+      return (props.amount*props.interestRate*props.conversionRate/(100)).toFixed(2);
+    }
+    
     return (
       <div>
           <h4>/Year</h4>
-          <p value="5" style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate/100).toFixed(2)} GBP</p>
-          <p style={{width:100 + "px"}}>{(this.props.amount*this.props.interestRate*this.props.conversionRate/100).toFixed(2)} {this.props.currency}</p>
+          <p value="5" style={{width:100 + "px"}}>{getAnnualInterest()} GBP</p>
+          <p style={{width:100 + "px"}}>{getConvertedAnnualInterest()} {props.currency}</p>
       </div>
       );
-  }
 }
 
-class CurrencySelector extends Component {
-
-  constructor(props) {
-    super(props);
-    this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
-  }
-
-  handleCurrencyChange(e) {
-    this.props.onCurrencyChange(e.target.value);
-  }
-
-  render () {
+//Functional component showing a drop-down of selectable currencies
+const CurrencySelector = (props) => {
     return (
       <div>
           <h3>Convert to Currency</h3>
           {'GBP -> '}
           <select 
-          value={this.props.currency}
-          onChange={this.handleCurrencyChange}
+          value={props.currency}
+          onChange={(e) => 
+            {
+              var newCurrency = e.target.value;
+              Client.search("", rates => {
+
+                switch(newCurrency) {
+                  case "AUD":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_AUD);
+                      break;
+                  case "BTC":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_BTC);
+                      break;
+                  case "CAD":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_CAD);
+                      break;
+                  case "CNY":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_CNY);
+                      break;
+                  case "EUR":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_EUR);
+                      break;
+                  case "USD":
+                      props.handleCurrencyChange(newCurrency, rates.GBP_USD);
+                      break;
+                  default:
+                      props.handleCurrencyChange(newCurrency, rates.GBP_USD);
+              }
+
+            });
+            }
+          }
           >
             <option value="AUD">AUD</option>
             <option value="BTC">BTC</option>
@@ -242,7 +194,20 @@ class CurrencySelector extends Component {
           </select>
       </div>
       );
+}
+
+//Puts variables from the redux store into App's props
+function mapStateToProps(state) {
+  return {
+    amount: state.get('amount'),
+    interestRate: state.get('interestRate'),
+    currency: state.get('currency'),
+    conversionRate: state.get('conversionRate')
   }
 }
 
-export default App;
+//Export the 'smart' component AppContainer
+export const AppContainer = connect(
+  mapStateToProps,
+  actionCreators
+  )(App);

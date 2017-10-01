@@ -19,6 +19,7 @@ Client.search("", rates => {
 	store.dispatch(handleCurrencyChange('USD', rates.GBP_USD));
 });
 
+//React renders the components - AppContainer is the Redux-powered container for the main App component
 ReactDOM.render(
 	<Provider store={store}>
 		<AppContainer />

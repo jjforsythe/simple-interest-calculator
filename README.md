@@ -6,6 +6,10 @@ To run this app:
 - Run 'npm install' from the root directory
 - Run 'npm start' from the root directory
 
+To test (currently only initial rendering test):
+
+- Run 'npm run client-test' from the root directory
+
 ## Client
 
 The code for the client can be found in /client and runs on localhost:3000.

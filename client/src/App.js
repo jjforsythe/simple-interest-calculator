@@ -196,7 +196,6 @@ const CurrencySelector = (props) => {
             }
           }
           >
-            // Show available currency options
             <option value="AUD">AUD</option>
             <option value="BTC">BTC</option>
             <option value="CAD">CAD</option>

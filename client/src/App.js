@@ -5,7 +5,8 @@ import './App.css';
 import Client from "./Client";
 import * as actionCreators from './action_creators';
 
-//App component is the parent of other components
+// App component is the parent of other components
+// Components are structured into a table
 const App = (props) => {
     return (
       <div className="App">
@@ -16,25 +17,31 @@ const App = (props) => {
         <table className="myTable">
         <tbody>
           <tr>
-            <td><Amount
-              amount = {props.amount}
-              handleAmountChange = {props.handleAmountChange}
-             /></td>
+            <td>
+              <Amount
+                amount = {props.amount}
+                handleAmountChange = {props.handleAmountChange}
+               />
+             </td>
             <td style={{width:20 + "px"}}></td>
-            <td><InterestRate
-              interestRate = {props.interestRate}
-              handleInterestChange = {props.handleInterestChange}
-            /></td>
+            <td>
+              <InterestRate
+                interestRate = {props.interestRate}
+                handleInterestChange = {props.handleInterestChange}
+              />
+            </td>
           </tr>
         </tbody>
       </table>
       <table className="myTable">
         <tbody>
           <tr>
-            <td style={{width:290 + "px"}}><CurrencySelector 
-              currency = {props.currency}
-              handleCurrencyChange = {props.handleCurrencyChange}
-            /></td>
+            <td style={{width:310 + "px"}}>
+              <CurrencySelector 
+                currency = {props.currency}
+                handleCurrencyChange = {props.handleCurrencyChange}
+              />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -50,19 +57,23 @@ const App = (props) => {
             <td></td>
           </tr>
           <tr>
-            <td><MonthlyInterest 
-              amount = {props.amount}
-              interestRate = {props.interestRate}
-              currency = {props.currency}
-              conversionRate = {props.conversionRate}
-            /></td>
+            <td>
+              <MonthlyInterest 
+                amount = {props.amount}
+                interestRate = {props.interestRate}
+                currency = {props.currency}
+                conversionRate = {props.conversionRate}
+              />
+            </td>
             <td style={{width:20 + "px"}}></td>
-            <td><AnnualInterest 
-              amount = {props.amount}
-              interestRate = {props.interestRate}
-              currency = {props.currency}
-              conversionRate = {props.conversionRate}
-            /></td>
+            <td>
+              <AnnualInterest 
+                amount = {props.amount}
+                interestRate = {props.interestRate}
+                currency = {props.currency}
+                conversionRate = {props.conversionRate}
+              />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -70,7 +81,7 @@ const App = (props) => {
     );
 }
 
-//Functional component showing the amount input field
+// Functional component showing the amount input field
 const Amount = (props) => {
     return(
       <div>
@@ -103,10 +114,10 @@ const InterestRate = (props) => {
       );
 }
 
-//Functional component displaying the monthly interest
+// Functional component displaying the monthly interest
 const MonthlyInterest = (props) => {
 
-    //calculate monthly interest
+    // Calculate monthly interest
     const getMonthlyInterest = () => {
       return (props.amount*props.interestRate/(100*12)).toFixed(2);
     }
@@ -124,10 +135,10 @@ const MonthlyInterest = (props) => {
       );
 }
 
-//Functional component displaying the annual interest
+// Functional component displaying the annual interest
 const AnnualInterest = (props) => {
 
-    //calculate monthly interest
+    // Calculate annual interest
     const getAnnualInterest = () => {
       return (props.amount*props.interestRate/(100)).toFixed(2);
     }
@@ -145,7 +156,7 @@ const AnnualInterest = (props) => {
       );
 }
 
-//Functional component showing a drop-down of selectable currencies
+// Functional component showing a drop-down of selectable currencies
 const CurrencySelector = (props) => {
     return (
       <div>
@@ -185,6 +196,7 @@ const CurrencySelector = (props) => {
             }
           }
           >
+            // Show available currency options
             <option value="AUD">AUD</option>
             <option value="BTC">BTC</option>
             <option value="CAD">CAD</option>
@@ -196,7 +208,7 @@ const CurrencySelector = (props) => {
       );
 }
 
-//Puts variables from the redux store into App's props
+// Puts variables from the redux store into App's props
 function mapStateToProps(state) {
   return {
     amount: state.get('amount'),
@@ -206,7 +218,7 @@ function mapStateToProps(state) {
   }
 }
 
-//Export the 'smart' component AppContainer
+// Export the 'smart' component AppContainer
 export const AppContainer = connect(
   mapStateToProps,
   actionCreators

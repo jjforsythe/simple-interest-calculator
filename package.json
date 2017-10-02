@@ -25,7 +25,10 @@
     "express": "^4.16.1",
     "immutable": "^3.8.1",
     "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",    
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.13"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
